@@ -1,0 +1,23 @@
+services:
+  mysql:
+    image: mysql:lts-oraclelinux9
+    container_name: erp-db
+    restart: always
+    environment:
+      - MYSQL_DATABASE=erp_db
+      - MYSQL_USER=erp_user
+      - MYSQL_PASSWORD=erpspringkotlindb
+      - MYSQL_ROOT_PASSWORD=the_admin_of_erp
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - erp-network
+
+volumes:
+  mysql_data:
+
+
+networks:
+  erp-network:

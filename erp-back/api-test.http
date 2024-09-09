@@ -1,0 +1,192 @@
+100-199: Informational
+
+100: Continue: The server is expecting more data to complete the request.
+101: Switching Protocols: The server is switching protocols, as requested by the client.
+200-299: Success
+
+200: OK: The request was successful.
+201: Created: The server created a new resource.
+202: Accepted: The request has been accepted for processing, but the processing is not complete yet.
+204: No Content: The server successfully processed the request but has no content to return.
+206: Partial Content: The server is returning a partial response to a GET request.
+300-399: Redirection
+
+301: Moved Permanently: The resource has been permanently moved to a new location.
+302: Found: The resource has been temporarily moved to a new location.
+304: Not Modified: The resource has not been modified since the last request.
+307: Temporary Redirect: The resource has been temporarily moved to a new location.
+400-499: Client Error
+
+400: Bad Request: The server could not understand the request due to invalid syntax or missing data.
+401: Unauthorized: The client is not authorized to access the resource.
+403: Forbidden: The client is forbidden from accessing the resource.
+404: Not Found: The requested resource could not be found.  
+405: Method Not Allowed: The specified HTTP method is not allowed for this resource.
+409: Conflict: The request could not be completed due to a conflict with the current state of the resource.
+500-599: Server Error
+
+500: Internal Server Error: The server encountered an unexpected condition that prevented it from fulfilling the request.
+501: Not Implemented: The server does not support the requested feature.  
+503: Service Unavailable: The server is temporarily unavailable.
+504: Gateway Timeout: A gateway server timed out while waiting for a response from an upstream server.
+
+
+###
+GET http://localhost:4080/erp-dev
+
+###
+GET http://localhost:4080/erp-dev/actuator/info/
+
+###
+GET http://localhost:4080/erp-dev/api/v1/test
+
+###
+GET http://localhost:4080/erp-dev/api/v1/
+
+###
+GET http://localhost:4080/erp-dev/api/v1
+
+###
+GET http://localhost:4080/erp-dev/api/v1/required
+
+###
+POST http://localhost:4080/erp-dev/login/
+Content-Type: application/json
+
+{
+    "username": "admin.admin",
+    "password": "test1234",
+    "verificationCode": ""
+}
+
+### Fake Request to set global port 4080 (local) 8888 (docker)
+GET https://postman-echo.com/get?foo1=bar1&foo2=bar2
+
+> {%
+  client.global.set("port", "4080");
+  // client.global.set("port", "8888");
+%}
+
+### Login and get Bearer
+POST http://localhost:{{port}}/starter-test/login
+Content-Type: application/json
+
+{
+  "username": "admin.admin",
+  "password": "test1234",
+  "verificationCode": ""
+}
+
+> {%
+  client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+  });
+  client.global.set("auth_token", response.headers.valueOf("Authorization").replace("Bearer ", ""));
+%}
+
+### Login as user
+POST http://localhost:{{port}}/starter-test/login
+Content-Type: application/json
+
+{
+  "username": "john.doe",
+  "password": "test1234",
+  "verificationCode": "650364"
+}
+
+> {%
+  client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+  });
+%}
+
+
+
+### Add / Update
+POST http://localhost:{{port}}/starter-test/api/v1/address
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "name": "Someone",
+  "street": "Somestreet",
+  "zip": "1234",
+  "city": "Somecity",
+  "email": "another@fakemailgenerator.net",
+  "tel": "520-891-3434",
+  "enabled": true,
+  "lastModfied": "2022-01-01T00:00:00",
+  "options": {
+    "option2": "value2"
+  },
+  "things": []
+}
+
+> {%
+  client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+  });
+  const body = response.body;
+  client.global.set("test_address_id", body['id']);
+%}
+
+### Get all
+GET http://localhost:{{port}}/starter-test/api/v1/address
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+> {%
+  client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+  });
+%}
+
+### Get 1
+GET http://localhost:{{port}}/starter-test/api/v1/address/{{test_address_id}}
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+> {%
+  client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+  });
+%}
+
+
+### Import
+POST http://localhost:{{port}}/starter-test/api/v1/address/import
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Authorization: Bearer {{auth_token}}
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="address-import.csv"
+Content-Type: text/csv
+
+< ./address-import.csv
+--WebAppBoundary--
+
+> {%
+  client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+  });
+%}
+
+### Export
+GET http://localhost:{{port}}/starter-test/api/v1/address/export
+Authorization: Bearer {{auth_token}}
+
+> {%
+  client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+  });
+%}
+
+### Delete
+DELETE  http://localhost:{{port}}/starter-test/api/v1/address/{{test_address_id}}
+Authorization: Bearer {{auth_token}}
+
+> {%
+  client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+  });
+%}

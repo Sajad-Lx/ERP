@@ -1,0 +1,9 @@
+services:
+  erp-front:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: erp-front
+    restart: always
+    ports:
+      - "8080:80"

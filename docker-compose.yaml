@@ -1,0 +1,65 @@
+services:
+  mysql:
+    image: mysql:lts-oraclelinux9
+    container_name: erp-db
+    environment:
+      - MYSQL_DATABASE=erp_db
+      - MYSQL_USER=erp_user
+      - MYSQL_PASSWORD=erpspringkotlindb
+      - MYSQL_ROOT_PASSWORD=the_admin_of_erp
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  erp-back:
+    build:
+      context: ./erp-back
+      dockerfile: Dockerfile
+    container_name: erp-back
+    restart: always
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://erp-db:3306/erp_db?ssl-mode=REQUIRED
+      - SPRING_DATASOURCE_USERNAME=erp_user
+      - SPRING_DATASOURCE_PASSWORD=erpspringkotlindb
+      - SPRING_PROFILES_ACTIVE=docker
+
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    networks:
+      - erp-network
+
+  erp-front:
+    build:
+      context: ./erp-front
+      dockerfile: Dockerfile
+    container_name: erp-front
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      - erp-network
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: erp-nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - erp-network
+    depends_on:
+      - erp-front
+      - erp-back
+
+volumes:
+  mysql_data:
+
+
+networks:
+  erp-network:
+    external: true

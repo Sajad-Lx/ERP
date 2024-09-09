@@ -1,0 +1,21 @@
+services:
+  erp-back:
+    build: .
+    container_name: erp-back
+    restart: always
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://erp-db:3306/erp_db?ssl-mode=REQUIRED
+      - SPRING_DATASOURCE_USERNAME=erp_user
+      - SPRING_DATASOURCE_PASSWORD=erpspringkotlindb
+      - SPRING_PROFILES_ACTIVE=docker
+
+    ports:
+      - "8080:8080"
+    networks:
+      - erp-network
+    depends_on:
+      - mysql
+
+networks:
+  erp-network:
+    external: true

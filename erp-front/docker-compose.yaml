@@ -4,6 +4,16 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: erp-front
-    restart: always
+    restart: no
     ports:
-      - "8080:80"
+      - "8000:80"
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx_local
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "80:80"
+    depends-on:
+      - erp-front

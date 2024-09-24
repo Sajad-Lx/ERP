@@ -11,7 +11,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 
 class APIKeyAuthFilter(
     private val authProvider: AuthProvider
-): OncePerRequestFilter() {
+) : OncePerRequestFilter() {
     override fun doFilterInternal(
         @NonNull request: HttpServletRequest,
         @NonNull response: HttpServletResponse,

@@ -1,5 +1,6 @@
 package com.orion.erp_back.common
 
+import com.orion.erp_back.utils.SwaggerUtils
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -12,6 +13,9 @@ open class BaseIntegrationControllerItem {
 
     @Autowired
     protected lateinit var objectMapper: ObjectMapper
+
+    @MockBean
+    protected lateinit var swaggerUtils: SwaggerUtils
 
     @Autowired
     protected lateinit var mockMvc: MockMvc

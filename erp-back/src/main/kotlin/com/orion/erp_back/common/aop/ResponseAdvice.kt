@@ -2,6 +2,7 @@ package com.orion.erp_back.common.aop
 
 import com.orion.erp_back.common.response.ErrorResponse
 import com.orion.erp_back.common.response.OkResponse
+import com.orion.erp_back.utils.SwaggerUtils
 import org.springframework.core.MethodParameter
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
 
 @RestControllerAdvice
 class ResponseAdvice(
+    private val swaggerUtils: SwaggerUtils
 ) : ResponseBodyAdvice<Any> {
 
 
@@ -34,6 +36,11 @@ class ResponseAdvice(
         request: ServerHttpRequest,
         response: ServerHttpResponse
     ): Any? {
+        if (swaggerUtils.confirmPathEqualsSwaggerConfig(request.uri.path)
+        ) {
+            return body
+        }
+
         return when (body) {
             is ErrorResponse -> body
             else -> body.let { OkResponse.of(HttpStatus.OK.value(), HttpStatus.OK.name, it) }

@@ -1,0 +1,24 @@
+.container {
+	display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.header {
+  flex-shrink: 0;
+  height: rem(60px); /* Adjust the header height if necessary */
+  background-color: var(--mantine-color-header-bg); /* Use your header background */
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  overflow: hidden; /* Prevents growing padding issue */
+}
+
+.content {
+  flex: 1;
+  /* overflow-y: auto; /* Ensures content scrolls if too large */
+  /* padding: rem(16px); */
+  background-color: var(--mantine-color-content-bg);
+}

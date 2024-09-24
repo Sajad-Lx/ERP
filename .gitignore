@@ -1,0 +1,4 @@
+erp-back/src/main/resources/application-secret-dev.yaml
+erp-back/src/main/resources/application-dev.yaml
+erp-front/.env.production
+erp-back/src/main/resources/application-secret-prod.yaml

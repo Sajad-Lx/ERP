@@ -32,25 +32,52 @@
 
 
 ###
-GET http://localhost:4080/erp-dev
+GET http://localhost:8080/api-docs
+Content-Type: application/json
+X-API-KEY: 1f242d49b9816078f71dbddc7240a8b64843
 
 ###
-GET http://localhost:4080/erp-dev/actuator/info/
+POST http://localhost:8080/api/v1/users/register
+Content-Type: application/json
+X-API-KEY: 1f242d49b9816078f71dbddc7240a8b64843
+
+{
+  "username": "test",
+  "firstName": "test",
+  "lastName": "rest",
+  "email": "mygmail@mail.com",
+  "password": "12345678"
+}
 
 ###
-GET http://localhost:4080/erp-dev/api/v1/test
+POST http://localhost:8080/api/v1/auth/signIn
+Content-Type: application/json
+X-API-KEY: 1f242d49b9816078f71dbddc7240a8b64843
+
+{
+  "email": "admin@mail.com",
+  "password": "test1234"
+}
+
 
 ###
-GET http://localhost:4080/erp-dev/api/v1/
+GET http://localhost:8080/actuator/info/
+
 
 ###
-GET http://localhost:4080/erp-dev/api/v1
+GET http://localhost:8080/api/v1/test
 
 ###
-GET http://localhost:4080/erp-dev/api/v1/required
+GET http://localhost:8080/api/v1/
 
 ###
-POST http://localhost:4080/erp-dev/login/
+GET http://localhost:8080/api/v1
+
+###
+GET http://localhost:8080/api/v1/required
+
+###
+POST http://localhost:8080/login/
 Content-Type: application/json
 
 {
@@ -59,11 +86,11 @@ Content-Type: application/json
     "verificationCode": ""
 }
 
-### Fake Request to set global port 4080 (local) 8888 (docker)
+### Fake Request to set global port 8080 (local) 8888 (docker)
 GET https://postman-echo.com/get?foo1=bar1&foo2=bar2
 
 > {%
-  client.global.set("port", "4080");
+  client.global.set("port", "8080");
   // client.global.set("port", "8888");
 %}
 

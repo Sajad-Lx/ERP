@@ -20,7 +20,7 @@ class RedisConfig {
     lateinit var host: String
 
     @Bean
-    fun redisConnectionFactory(): LettuceConnectionFactory = LettuceConnectionFactory(
+    fun redisConnectionFactory(): RedisConnectionFactory = LettuceConnectionFactory(
         RedisStandaloneConfiguration(host, port)
     )
 

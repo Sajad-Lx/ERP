@@ -1,10 +1,15 @@
 package com.orion.erp_back.common.response
 
+import io.swagger.v3.oas.annotations.media.Schema
+
 class OkResponse {
+    @field:Schema(description = "Response Code")
     var code: Int
 
+    @field:Schema(description = "Response Message")
     var message: String = ""
 
+    @field:Schema(description = "Response Data")
     var data: Any? = null
 
     private constructor(code: Int) {

@@ -1,10 +1,15 @@
 package com.orion.erp_back.common.response
 
+import io.swagger.v3.oas.annotations.media.Schema
+
 class ErrorResponse {
+    @field:Schema(description = "Error Code")
     var code: Int
 
+    @field:Schema(description = "Error Message")
     var message: String = ""
 
+    @field:Schema(description = "Error Item")
     var errors: Any? = null
 
     private constructor(code: Int) {

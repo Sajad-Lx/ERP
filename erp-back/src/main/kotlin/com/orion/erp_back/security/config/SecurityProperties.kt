@@ -30,10 +30,10 @@ class SecurityProperties {
     var apiKey: String = ""
 
     @field:Positive
-    var accessExpirationTime: Long = 360_000 // 1 Hour in milliseconds
+    var accessExpirationTime: Long = 60_000 // 10 min in milliseconds
 
     @field:Positive
-    var refreshExpirationTime: Long = 7 * 24 * 60 * 60 * 1000 // 7 Days
+    var refreshExpirationTime: Long = 300_000// 7 * 24 * 60 * 60 * 1000 // 7 Days
 
     @field:Positive
     var strength: Int = 10

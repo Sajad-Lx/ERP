@@ -1,7 +1,13 @@
-FROM openjdk:17-jdk-slim
-ARG JAR_FILE=build/libs/*.jar
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT [ "java", "-jar", "/app.jar" ]
+# FROM gradle:jdk17-alpine as build
+# COPY --chown=gradle:gradle . ./home/gradle/src
+# WORKDIR /home/gradle/src
+# RUN gradle build
 
-EXPOSE 8888/tcp
-HEALTHCHECK --interval=60s --timeout=10s --start-period=5s --retries=5 CMD [ "wget", "--no-verbose", "--tries=1", "--spider", "localhost:8888/starter-test/actuator/health || exit 1" ]
+FROM openjdk:24-jdk-slim
+WORKDIR /app
+COPY . ./
+RUN ./gradlew clean build -x test
+CMD [ "java", "-jar", "./build/libs/erp-back.jar" ]
+
+EXPOSE 8080
+HEALTHCHECK --interval=60s --timeout=10s --start-period=5s --retries=5 CMD [ "wget", "--no-verbose", "--tries=1", "--spider", "localhost:8080/starter-test/actuator/health || exit 1" ]

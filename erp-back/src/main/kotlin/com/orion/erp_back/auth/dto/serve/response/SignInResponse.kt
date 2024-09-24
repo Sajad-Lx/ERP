@@ -2,15 +2,28 @@ package com.orion.erp_back.auth.dto.serve.response
 
 import com.orion.erp_back.user.constant.UserRole
 import com.orion.erp_back.user.entity.User
+import io.swagger.v3.oas.annotations.media.Schema
 
 class SignInResponse(
+    @field:Schema(
+        description = "User Access Token",
+        nullable = true
+    )
     val accessToken: String?,
-    val twoFactorRequired: Boolean,
-    val message: String,
 
+    @field:Schema(description = "2FA required or not", nullable = false)
+    val twoFactorRequired: Boolean,
+
+    @field:Schema(description = "User Id", nullable = false)
     val userId: Long,
+
+    @field:Schema(description = "User Role", nullable = false, implementation = UserRole::class)
     val role: UserRole,
+
+    @field:Schema(description = "User Name", nullable = false)
     val username: String,
+
+    @field:Schema(description = "User Email", nullable = false, format = "email")
     val email: String,
 ) {
     companion object {
@@ -19,7 +32,6 @@ class SignInResponse(
                 SignInResponse(
                     accessToken = accessToken,
                     twoFactorRequired = isUsing2FA,
-                    message = "Sign-in successful",
 
                     userId = id,
                     role = role,
@@ -34,7 +46,6 @@ class SignInResponse(
                 SignInResponse(
                     accessToken = accessToken,
                     twoFactorRequired = isUsing2FA,
-                    message = "2FA code required",
 
                     userId = id,
                     role = role,

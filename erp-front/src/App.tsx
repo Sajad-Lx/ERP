@@ -1,26 +1,21 @@
 import "@mantine/core/styles.css";
-import { useState } from "react";
-import { MantineProvider } from "@mantine/core";
-import { theme } from "@/theme";
 import { HeaderTabs } from "@/components/headers/HeaderTabs";
+import Navbar from "@/components/navbar/Navbar";
+import classes from "@/app/App.module.css";
+import Scaffold from "./components/scaffold/Scaffold";
 
 export default function App() {
-  const [count, setCount] = useState(0);
-
-  return (
-    <MantineProvider theme={theme} defaultColorScheme="dark">
-      <HeaderTabs />
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </MantineProvider>
-  );
+	return (
+		<div className={classes.container}>
+			<header>
+				<HeaderTabs />
+			</header>
+			<div className={classes.body}>
+				<Navbar />
+				<main className={classes.content}>
+					<Scaffold />
+				</main>
+			</div>
+		</div>
+	);
 }

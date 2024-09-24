@@ -1,131 +1,21 @@
 spring:
-  application:
-    name: erp-back
-  jpa:
-    # Delays the initialization of the datasource until after JPA is configured,
-    # which can be necessary for certain setups.
-    defer-datasource-initialization: true
-    hibernate:
-      naming:
-        # Specifies the strategy Hibernate uses to convert entity names to database table names.
-        # Here, it’s using the standard naming strategy.
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-        # Defines the implicit naming strategy, which is how Hibernate automatically
-        # determines table and column names when not explicitly specified.
-        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
-      # Automatically updates the database schema based on the entities in the application.
-      # Useful during development.
-      ddl-auto: update
-    # Keeps the database session open until the view is rendered, which helps in
-    # scenarios where lazy loading is needed after the transaction has completed.
-    open-in-view: true
-    properties:
-      # Controls whether Hibernate should output the SQL statements it executes
-      # to the console. Set to false to reduce log noise.
-      hibernate.show_sql: false
-      # Specifies the storage engine for MySQL databases.
-      # InnoDB is a popular choice for its reliability and performance.
-      hibernate.dialect.storage_engine: innodb
-  datasource:
-    # The password for connecting to the database.
-    password: erpspringkotlindb
-    # The username for connecting to the database.
-    username: erp_user
-    # The JDBC URL for the database, including connection parameters like SSL mode.
-    url: jdbc:mysql://localhost:3306/erp_db?ssl-mode=REQUIRED
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  sql:
-    init:
-      # Indicates that SQL scripts should always be run on startup.
-      # Useful for initializing the database.
-      mode: always
-      # If set to true, Spring will continue executing the next SQL
-      # script even if an error occurs in one of them.
-      continue-on-error: true
-  data:
-    redis:
-      host: localhost
-      port: 6379
-server:
-  compression:
-    # Disables HTTP response compression, which could be useful in
-    # specific performance tuning scenarios.
-    enabled: false
-  http2:
-    # Enables HTTP/2 support for the server, improving performance for modern browsers.
-    enabled: true
-  # Sets the port on which the server will listen.
-  port: 4080
+  profiles:
+    active: local
+    group:
+      "local": "local, common, secret-local"
+      "dev": "dev, common, secret-dev"
+      "prod": "prod, common, secret-prod"
+
+#---
+#spring:
+#  datasource:
+#    password: erpspringkotlindb
+#    username: erp_user
+#    url: jdbc:mysql://host.docker.internal:3306/erp_db?ssl-mode=REQUIRED
+#  config:
+#    activate:
+#      on-profile: docker
+#server:
+#  port: 8888
 #  servlet:
-#    # Defines the base URL context path for the application.
-#    context-path: /erp-dev
-jwt-security:
-  # The secret key used to sign JWT tokens.
-  # This should be a secure, randomly generated value in production.
-  secret: 09a9e6d1b49cd8911da9cf90dd85381be1968cbf72f5a14e335fad1d7352506f
-  api-key: 1f242d49b9816078f71dbddc7240a8b64843
-  # Defines the token expiration time in days. Here, it's set to 365 days.
-  expiration-time: 365
-management:
-  endpoints:
-    #enabled-by-default: false
-    web:
-      exposure:
-        # Specifies which management endpoints are exposed over HTTP.
-        # In this case, the health, info, and env endpoints are exposed.
-        include: "health,info,env"
-
----
-spring:
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate.show_sql: true
-  config:
-    activate:
-      on-profile: test
-  sql:
-    init:
-      mode: always
-      continue-on-error: true
-
----
-spring:
-  jpa:
-    hibernate:
-      # Drops and recreates the database schema on each startup,
-      # useful for development environments.
-      ddl-auto: create-drop
-    properties:
-      hibernate.show_sql: true
-  config:
-    activate:
-      on-profile: development
-  sql:
-    init:
-      mode: always
-      continue-on-error: false
-
-logging:
-  level:
-    "[org.hibernate.SQL]": debug
-    "[org.hibernate.type.descriptor.sql]": trace
-    "[org.hibernate.transaction.JDBCTransaction]": debug
-    "[org.hibernate.jdbc.ConnectionManager]": debug
-    "[org.springframework.orm.JpaTransactionManager]": debug
-    "[org.springframework.jdbc]": debug
-
----
-spring:
-  datasource:
-    password: erpspringkotlindb
-    username: erp_user
-    url: jdbc:mysql://host.docker.internal:3306/erp_db?ssl-mode=REQUIRED
-  config:
-    activate:
-      on-profile: docker
-server:
-  port: 8888
-  servlet:
-    context-path: /erp-test
+#    context-path: /erp-test

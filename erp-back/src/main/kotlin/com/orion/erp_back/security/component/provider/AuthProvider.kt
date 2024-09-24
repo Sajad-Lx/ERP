@@ -2,8 +2,8 @@ package com.orion.erp_back.security.component.provider
 
 import com.orion.erp_back.security.component.filter.JWTAuthFilter
 import com.orion.erp_back.security.config.CorsConfig
-import com.orion.erp_back.security.config.SecurityProperties
 import jakarta.servlet.http.HttpServletRequest
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configurers.CorsConfigurer
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer
@@ -18,12 +18,14 @@ import org.springframework.stereotype.Component
 class AuthProvider(
     private val corsConfig: CorsConfig,
     private val jwtProvider: JWTProvider,
-    securityProperties: SecurityProperties,
 ) {
-    var apiKey: String = securityProperties.apiKey
+    @Value("\${auth.x-api-key}")
+    lateinit var apiKey: String
 
     fun ignoreListDefaultEndpoints(): Array<String> = arrayOf(
         "/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger.html",
         "/h2-console/**",
     )
 

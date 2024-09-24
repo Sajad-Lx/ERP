@@ -1,0 +1,51 @@
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: erp-nginx
+    restart: no
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    # depends_on:
+      
+    networks:
+      - erp-network
+
+  mysql:
+    image: mysql:lts-oraclelinux9
+    container_name: erp-mysql
+    restart: no
+    environment:
+      - MYSQL_ROOT_PASSWORD=the_admin_of_erp
+      - MYSQL_DATABASE=erp_db
+      - MYSQL_USER=erp_user
+      - MYSQL_PASSWORD=erpspringkotlindb
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - erp-network
+  
+  redis:
+    image: redis:alpine
+    container_name: erp-redis
+    restart: no
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - erp-network
+
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+
+
+networks:
+  erp-network:
+    driver: bridge

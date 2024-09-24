@@ -31,6 +31,7 @@ dependencies {
     val mockitoKt = "5.4.0"
     val instancio = "5.0.1"
     val querydsl = "5.1.0"
+    val swagger = "2.6.0"
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -49,6 +50,7 @@ dependencies {
     implementation("org.apache.poi:poi-ooxml:$poi")
     implementation("com.querydsl:querydsl-jpa:$querydsl:jakarta")
     implementation("com.querydsl:querydsl-apt:$querydsl:jakarta")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$swagger")
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     annotationProcessor("com.querydsl:querydsl-apt:$querydsl:jakarta")

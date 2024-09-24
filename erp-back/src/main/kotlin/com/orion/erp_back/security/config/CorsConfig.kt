@@ -1,5 +1,6 @@
 package com.orion.erp_back.security.config
 
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.cors.CorsConfiguration
@@ -8,17 +9,21 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration
 class CorsConfig {
+    @Value("\${cors.origin.frontend}")
+    lateinit var frontend: String
+
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
         val source = UrlBasedCorsConfigurationSource()
 
-        configuration.allowedOrigins = listOf("*")  // Allows from any origin.
+        configuration.allowedOrigins = listOf(frontend)  // Allows from any origin.
         configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD")
         configuration.allowedHeaders = listOf(
             "Authorization",
             "Content-Type",
             "X-Requested-With",
+            "X-API-KEY",
             "Access-Control-Allow-Origin",
             "Access-Control-Allow-Credentials",
             "Access-Control-Request-Method",

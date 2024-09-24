@@ -1,0 +1,9 @@
+node_modules
+build
+dist
+package-lock.json
+LICENSE
+README.md
+.git
+.DS_Store
+.env

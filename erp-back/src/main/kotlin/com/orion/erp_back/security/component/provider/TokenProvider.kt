@@ -15,13 +15,13 @@ class TokenProvider(
     fun getRefreshToken(userId: Long): String {
         val redisKey: String = redisUtils.generateSessionKey(userId)
         val refreshToken: String = redisUtils.get(redisKey) ?: throw RefreshTokenNotFoundException(userId)
+        println(refreshToken)
 
         return refreshToken
     }
 
     fun deleteRefreshToken(userId: Long) {
         val redisKey: String = redisUtils.generateSessionKey(userId)
-
         redisUtils.delete(redisKey)
     }
 
@@ -32,7 +32,7 @@ class TokenProvider(
             redisKey,
             jwtProvider.createRefreshToken(SecurityUserItem.of(user)),
             jwtProvider.refreshExpireTime,
-            TimeUnit.SECONDS
+            TimeUnit.MILLISECONDS,
         )
     }
 

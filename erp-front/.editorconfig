@@ -1,0 +1,35 @@
+# Root EditorConfig file
+root = true
+
+# Global settings for all files
+[*]
+charset = utf-8
+indent_style = tab
+indent_size = 2
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Match Kotlin files
+[*.kt]
+indent_size = 4
+
+# Match TypeScript and JSX/TSX files
+[*.ts]
+[*.tsx]
+[*.js]
+[*.jsx]
+indent_size = 2
+
+# JSON files (e.g., package.json, tsconfig.json)
+[*.json]
+indent_size = 2
+
+# Markdown files
+[*.md]
+trim_trailing_whitespace = false
+
+# YAML files (e.g., application.yaml)
+[*.yml]
+[*.yaml]
+indent_size = 2
